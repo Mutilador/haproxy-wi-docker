@@ -65,6 +65,6 @@ RUN cd /var/www/haproxy-wi/app && \
         chown apache:apache /var/www/haproxy-wi/app/haproxy-wi.db
 
 EXPOSE 80
-VOLUME /var/www/haproxy-wi/
+#VOLUME /var/www/haproxy-wi/
 
 CMD /usr/sbin/httpd -DFOREGROUND
