@@ -1,16 +1,16 @@
-```
-# README copied https://github.com/Aidaho12/haproxy-wi and I add anothers informations.
+
+### README copied https://github.com/Aidaho12/haproxy-wi and I add anothers informations.
+
+
+## ENVs
 
 ```
-```
-# ENVs
-```
-
 **MYSQL_ENABLE** - the default is 0 ( disabled, use SQLITE ) turn on change to 1 
 **MYSQL_USER** - the default is "haproxywi"
 **MYSQL_PASS** - the default is "haproxywi"
 **MYSQL_DB** - the default is "haproxy-wi"
 **MYSQL_HOST** - the default is 127.0.0.1
+```
 
 ### For MySQL support:
 ```
