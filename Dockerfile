@@ -4,18 +4,11 @@ MAINTAINER Pavel Loginov (https://github.com/Aidaho12/haproxy-wi)
 # REFACT by Vagner Rodrigues Fernandes (vagner.rodrigues@gmail.com)
 # REFACT by Mauricio Nunes ( mutila@gmail.com )
 
-ARG MYSQL_ENABLE=0
-ARG MYSQL_USER="haproxywi"
-ARG MYSQL_PASS="haproxywi"
-ARG MYSQL_DB="haproxy-wi"
-ARG MYSQL_HOST=127.0.0.1
-
-# ENVs
-ENV ARG_MYSQL_ENABLE=$MYSQL_ENABLE
-ENV ARG_MYSQL_USER=$MYSQL_USER
-ENV ARG_MYSQL_PASS=$MYSQL_PASS
-ENV ARG_MYSQL_DB=$MYSQL_DB
-ENV ARG_MYSQL_HOST=$MYSQL_HOST
+ENV MYSQL_ENABLE=0
+ENV MYSQL_USER="haproxywi"
+ENV MYSQL_PASS="haproxywi"
+ENV MYSQL_DB="haproxy-wi"
+ENV MYSQL_HOST=127.0.0.1
 
 # Copy external files
 COPY epel.repo /etc/yum.repos.d/epel.repo
