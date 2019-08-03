@@ -1,6 +1,15 @@
 FROM centos
+
 MAINTAINER Pavel Loginov (https://github.com/Aidaho12/haproxy-wi)
 # REFACT by Vagner Rodrigues Fernandes (vagner.rodrigues@gmail.com)
+# REFACT by Mauricio Nunes ( mutila@gmail.com )
+
+# ENVs
+ENV MYSQL_ENABLE 0
+ENV MYSQL_USER "haproxywi"
+ENV MYSQL_PASS "haproxywi"
+ENV MYSQL_DB "haproxy-wi"
+ENV MYSQL_HOST 127.0.0.1
 
 # Copy external files
 COPY epel.repo /etc/yum.repos.d/epel.repo
@@ -35,6 +44,16 @@ RUN git clone https://github.com/Aidaho12/haproxy-wi.git /var/www/haproxy-wi && 
         mkdir -p /var/www/haproxy-wi/configs/hap_config && \
         chown -R apache:apache /var/www/haproxy-wi/
 
+COPY haproxy-wi.cfg /var/www/haproxy-wi/app/haproxy-wi.cfg        
+
+RUN sed -i 's/MYSQL_ENABLE/'"$MYSQL_ENABLE"'/g' /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i 's/MYSQL_USER/'"$MYSQL_USER"'/g' /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i 's/MYSQL_PASS/'"$MYSQL_PASS"'/g' /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i 's/MYSQL_DB/'"$MYSQL_DB"'/g' /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i 's/MYSQL_HOST/'"$MYSQL_HOST"'/g' /var/www/haproxy-wi/app/haproxy-wi.cfg 
+
+RUN chown -R apache:apache /var/www/haproxy-wi
+
 # PIP Install deps
 RUN pip3.5 install -r /var/www/haproxy-wi/requirements.txt --no-cache-dir
 
@@ -59,12 +78,12 @@ RUN yum -y erase \
 # Python link
 RUN ln -s /usr/bin/python3.5 /usr/bin/python3
 
-# Build sqlite database
-RUN cd /var/www/haproxy-wi/app && \
+# Build sql database
+RUN if [["$MYSQL_ENABLE" -eq 0 ]]; then cd /var/www/haproxy-wi/app && \
         ./create_db.py && \
-        chown apache:apache /var/www/haproxy-wi/app/haproxy-wi.db
+        chown apache:apache /var/www/haproxy-wi/app/haproxy-wi.db ; fi
 
 EXPOSE 80
-#VOLUME /var/www/haproxy-wi/
+VOLUME /var/www/haproxy-wi/
 
 CMD /usr/sbin/httpd -DFOREGROUND
