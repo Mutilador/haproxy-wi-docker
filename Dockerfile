@@ -51,7 +51,7 @@ RUN chmod +x /var/www/haproxy-wi/app/*.py && \
         chmod +x /var/www/haproxy-wi/app/tools/*.py && \
         chown -R apache:apache /var/log/httpd/    
 
-RUN if [["$MYSQL_ENABLE" -eq 1 ]]; then sed -i "s/enable = 0/enable = $MYSQL_ENABLE/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+RUN if ["$MYSQL_ENABLE" -eq 1 ] then sed -i "s/enable = 0/enable = $MYSQL_ENABLE/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
         sed -i "s/mysql_user = haproxy-wi/mysql_user = $MYSQL_USER/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
         sed -i "s/mysql_password = haproxy-wi/mysql_password = $MYSQL_PASS/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
         sed -i "s/mysql_db = haproxywi/mysql_db = $MYSQL_DB/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
@@ -76,7 +76,7 @@ RUN yum -y erase \
 RUN ln -s /usr/bin/python3.5 /usr/bin/python3
 
 # Build sql database
-RUN if [["$MYSQL_ENABLE" -eq 0 ]]; then cd /var/www/haproxy-wi/app && \
+RUN if ["$MYSQL_ENABLE" -eq 0 ] then cd /var/www/haproxy-wi/app && \
         ./create_db.py && \
         chown apache:apache /var/www/haproxy-wi/app/haproxy-wi.db ; fi
 
