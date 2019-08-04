@@ -7,7 +7,7 @@ MAINTAINER Pavel Loginov (https://github.com/Aidaho12/haproxy-wi)
 ENV MYSQL_ENABLE=0
 ENV MYSQL_USER="haproxy-wi"
 ENV MYSQL_PASS="haproxy-wi"
-ENV MYSQL_DB="haproxywi"
+ENV MYSQL_DB="haproxywi2"
 ENV MYSQL_HOST=127.0.0.1
 
 # Copy external files
@@ -39,6 +39,11 @@ RUN yum -y install https://centos7.iuscommunity.org/ius-release.rpm && \
 
 # Clone haproxy-wi git repo
 RUN git clone https://github.com/Aidaho12/haproxy-wi.git /var/www/haproxy-wi && \
+        sed -i "s/enable = 0/enable = $MYSQL_ENABLE/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i "s/mysql_user = haproxy-wi/mysql_user = $MYSQL_USER/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i "s/mysql_password = haproxy-wi/mysql_password = $MYSQL_PASS/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i "s/mysql_db = haproxywi/mysql_db = $MYSQL_DB/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i "s/mysql_host = 127.0.0.1/mysql_host = $MYSQL_HOST/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
         mkdir /var/www/haproxy-wi/keys/ && \
         mkdir -p /var/www/haproxy-wi/configs/hap_config && \
         chown -R apache:apache /var/www/haproxy-wi/
@@ -51,11 +56,6 @@ RUN chmod +x /var/www/haproxy-wi/app/*.py && \
         chmod +x /var/www/haproxy-wi/app/tools/*.py && \
         chown -R apache:apache /var/log/httpd/    
 
-RUN sed -i "s/enable = 0/enable = $MYSQL_ENABLE/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
-        sed -i "s/mysql_user = haproxy-wi/mysql_user = $MYSQL_USER/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
-        sed -i "s/mysql_password = haproxy-wi/mysql_password = $MYSQL_PASS/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
-        sed -i "s/mysql_db = haproxywi/mysql_db = $MYSQL_DB/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
-        sed -i "s/mysql_host = 127.0.0.1/mysql_host = $MYSQL_HOST/g" /var/www/haproxy-wi/app/haproxy-wi.cfg
 
 RUN chown -R apache:apache /var/www/haproxy-wi
 
