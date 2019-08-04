@@ -76,7 +76,7 @@ RUN yum -y erase \
 RUN ln -s /usr/bin/python3.5 /usr/bin/python3
 
 # Build sql database
-RUN then cd /var/www/haproxy-wi/app && \
+RUN cd /var/www/haproxy-wi/app && \
         ./create_db.py && \
         chown apache:apache /var/www/haproxy-wi/app/haproxy-wi.db
 
