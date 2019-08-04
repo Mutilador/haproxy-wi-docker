@@ -16,7 +16,7 @@ MariaDB [(none)]> grant all on haproxywi.* to 'haproxy-wi'@'localhost' IDENTIFIE
 
 ### Docker
 ```
-docker service create --detach=false --name haproxy-wi -e MYSQL_ENABLE=1 -e MYSQL_USE="haproxywi" -e MYSQL_PASS="haproxywi" --mount type=volume,src=haproxy-wi,dst=/var/www/haproxy-wi/app -p 8080:80 mbnunes/haproxy-wi-docker-envs
+docker service create --detach=false --name haproxy-wi -e MYSQL_ENABLE=1 -e MYSQL_USER="haproxy-wi" -e MYSQL_PASS="haproxy-wi" --mount type=volume,src=haproxy-wi,dst=/var/www/haproxy-wi/app -p 8080:80 mbnunes/haproxy-wi-docker-envs
 ```
 or
 ```
