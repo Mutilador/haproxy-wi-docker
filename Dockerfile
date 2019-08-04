@@ -4,11 +4,11 @@ MAINTAINER Pavel Loginov (https://github.com/Aidaho12/haproxy-wi)
 # REFACT by Vagner Rodrigues Fernandes (vagner.rodrigues@gmail.com)
 # REFACT by Mauricio Nunes ( mutila@gmail.com )
 
-ENV MYSQL_ENABLE=0
-ENV MYSQL_USER="haproxy-wi"
-ENV MYSQL_PASS="haproxy-wi"
-ENV MYSQL_DB="haproxywi2"
-ENV MYSQL_HOST=127.0.0.1
+ENV MYSQL_ENABLE 0
+ENV MYSQL_USER "haproxy-wi"
+ENV MYSQL_PASS "haproxy-wi"
+ENV MYSQL_DB "haproxywi2"
+ENV MYSQL_HOST 127.0.0.1
 
 # Copy external files
 COPY epel.repo /etc/yum.repos.d/epel.repo
@@ -76,9 +76,12 @@ RUN yum -y erase \
 RUN ln -s /usr/bin/python3.5 /usr/bin/python3
 
 # Build sql database
-RUN cd /var/www/haproxy-wi/app && \
-        ./create_db.py && \
-        chown apache:apache /var/www/haproxy-wi/app/haproxy-wi.db
+RUN set -ex; \
+        if ["$MYSQL_ENABLE" -eq 0]; then \
+                cd /var/www/haproxy-wi/app && \
+                ./create_db.py && \
+                chown apache:apache /var/www/haproxy-wi/app/haproxy-wi.db; \
+        fi
 
 EXPOSE 80
 VOLUME /var/www/haproxy-wi/
