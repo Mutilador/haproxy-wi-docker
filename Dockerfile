@@ -5,9 +5,9 @@ MAINTAINER Pavel Loginov (https://github.com/Aidaho12/haproxy-wi)
 # REFACT by Mauricio Nunes ( mutila@gmail.com )
 
 ENV MYSQL_ENABLE=0
-ENV MYSQL_USER="haproxywi"
-ENV MYSQL_PASS="haproxywi"
-ENV MYSQL_DB="haproxy-wi"
+ENV MYSQL_USER="haproxy-wi"
+ENV MYSQL_PASS="haproxy-wi"
+ENV MYSQL_DB="haproxywi"
 ENV MYSQL_HOST=127.0.0.1
 
 # Copy external files
@@ -43,16 +43,6 @@ RUN git clone https://github.com/Aidaho12/haproxy-wi.git /var/www/haproxy-wi && 
         mkdir -p /var/www/haproxy-wi/configs/hap_config && \
         chown -R apache:apache /var/www/haproxy-wi/
 
-COPY haproxy-wi.cfg /var/www/haproxy-wi/app/haproxy-wi2.cfg        
-
-RUN sed -i 's/MYSQL_ENABLE/'"$MYSQL_ENABLE"'/g' /var/www/haproxy-wi/app/haproxy-wi2.cfg && \
-        sed -i 's/MYSQL_USER/'"$MYSQL_USER"'/g' /var/www/haproxy-wi/app/haproxy-wi2.cfg && \
-        sed -i 's/MYSQL_PASS/'"$MYSQL_PASS"'/g' /var/www/haproxy-wi/app/haproxy-wi2.cfg && \
-        sed -i 's/MYSQL_DB/'"$MYSQL_DB"'/g' /var/www/haproxy-wi/app/haproxy-wi2.cfg && \
-        sed -i 's/MYSQL_HOST/'"$MYSQL_HOST"'/g' /var/www/haproxy-wi/app/haproxy-wi2.cfg 
-
-RUN chown -R apache:apache /var/www/haproxy-wi
-
 # PIP Install deps
 RUN pip3.5 install -r /var/www/haproxy-wi/requirements.txt --no-cache-dir
 
@@ -60,6 +50,16 @@ RUN pip3.5 install -r /var/www/haproxy-wi/requirements.txt --no-cache-dir
 RUN chmod +x /var/www/haproxy-wi/app/*.py && \
         chmod +x /var/www/haproxy-wi/app/tools/*.py && \
         chown -R apache:apache /var/log/httpd/
+
+COPY haproxy-wi-env.cfg /var/www/haproxy-wi/app/haproxy-wi.cfg        
+
+RUN sed -i 's/MYSQL_ENABLE/'"$MYSQL_ENABLE"'/g' /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i 's/MYSQL_USER/'"$MYSQL_USER"'/g' /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i 's/MYSQL_PASS/'"$MYSQL_PASS"'/g' /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i 's/MYSQL_DB/'"$MYSQL_DB"'/g' /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i 's/MYSQL_HOST/'"$MYSQL_HOST"'/g' /var/www/haproxy-wi/app/haproxy-wi.cfg 
+
+RUN chown -R apache:apache /var/www/haproxy-wi
 
 # Yum clear container
 RUN yum -y erase \
