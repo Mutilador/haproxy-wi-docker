@@ -53,11 +53,11 @@ RUN chmod +x /var/www/haproxy-wi/app/*.py && \
 
 COPY haproxy-wi-env.cfg /var/www/haproxy-wi/app/haproxy-wi.cfg        
 
-RUN sed -i 's/MYSQL_ENABLE/'"$MYSQL_ENABLE"'/g' /var/www/haproxy-wi/app/haproxy-wi.cfg && \
-        sed -i 's/MYSQL_USER/'"$MYSQL_USER"'/g' /var/www/haproxy-wi/app/haproxy-wi.cfg && \
-        sed -i 's/MYSQL_PASS/'"$MYSQL_PASS"'/g' /var/www/haproxy-wi/app/haproxy-wi.cfg && \
-        sed -i 's/MYSQL_DB/'"$MYSQL_DB"'/g' /var/www/haproxy-wi/app/haproxy-wi.cfg && \
-        sed -i 's/MYSQL_HOST/'"$MYSQL_HOST"'/g' /var/www/haproxy-wi/app/haproxy-wi.cfg 
+RUN sed -i "s/MYSQL_ENABLE/$MYSQL_ENABLE/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i "s/MYSQL_USER/$MYSQL_USER/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i "s/MYSQL_PASS/$MYSQL_PASS/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i "s/MYSQL_DB/$MYSQL_DB/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i "s/MYSQL_HOST/$MYSQL_HOST/g" /var/www/haproxy-wi/app/haproxy-wi.cfg 
 
 RUN chown -R apache:apache /var/www/haproxy-wi
 
