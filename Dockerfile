@@ -49,15 +49,13 @@ RUN pip3.5 install -r /var/www/haproxy-wi/requirements.txt --no-cache-dir
 # Fix app haproxy-wi perms
 RUN chmod +x /var/www/haproxy-wi/app/*.py && \
         chmod +x /var/www/haproxy-wi/app/tools/*.py && \
-        chown -R apache:apache /var/log/httpd/
+        chown -R apache:apache /var/log/httpd/    
 
-COPY haproxy-wi-env.cfg /var/www/haproxy-wi/app/haproxy-wi.cfg        
-
-RUN sed -i "s/MYSQL_ENABLE/$MYSQL_ENABLE/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
-        sed -i "s/MYSQL_USER/$MYSQL_USER/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
-        sed -i "s/MYSQL_PASS/$MYSQL_PASS/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
-        sed -i "s/MYSQL_DB/$MYSQL_DB/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
-        sed -i "s/MYSQL_HOST/$MYSQL_HOST/g" /var/www/haproxy-wi/app/haproxy-wi.cfg 
+RUN if [["$MYSQL_ENABLE" -eq 1 ]]; then sed -i "s/enable = 0/enable = $MYSQL_ENABLE/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i "s/mysql_user = haproxy-wi/mysql_user = $MYSQL_USER/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i "s/mysql_password = haproxy-wi/mysql_password = $MYSQL_PASS/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i "s/mysql_db = haproxywi/mysql_db = $MYSQL_DB/g" /var/www/haproxy-wi/app/haproxy-wi.cfg && \
+        sed -i "s/mysql_host = 127.0.0.1/mysql_host = $MYSQL_HOST/g" /var/www/haproxy-wi/app/haproxy-wi.cfg ; fi
 
 RUN chown -R apache:apache /var/www/haproxy-wi
 
